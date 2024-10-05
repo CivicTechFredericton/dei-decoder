@@ -17,7 +17,7 @@ const Home = () => {
             more inclusive content by identifying gaps and providing you
             actionable recommendations.
           </p>
-          <Link href="/next-page">
+          <Link href="/upload">
             <button className="px-6 mt-8 py-3 w-50 bg-gray-800 text-white rounded-full flex">
               Try it now
               <span className="ml-2 flex items-center justify-center w-6 h-6 bg-white text-gray-800 rounded-full">

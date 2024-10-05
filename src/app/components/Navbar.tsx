@@ -5,7 +5,7 @@ const Navbar = () => {
       <h1 className="text-xl font-bold "><a href="/">DEI Decoder</a></h1>
       <ul className="flex space-x-6 ">
         <li><a href="/about">About</a></li>
-        <li><a href="/">Try it Now</a></li>
+        <li><a href="/upload">Try it Now</a></li>
         <li><a href="/Faq">FAQ</a></li>
       </ul>
     </nav>
