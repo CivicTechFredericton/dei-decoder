@@ -6,7 +6,7 @@ const Navbar = () => {
       <ul className="flex space-x-12 text-xl font-extrabold">
         <li><a href="/about" className="">About</a></li>
         <li><a href="/upload">Try it Now</a></li>
-        <li><a href="/Faq">FAQ</a></li>
+        <li><a href="/faq">FAQ</a></li>
       </ul>
     </nav>
   </header>
