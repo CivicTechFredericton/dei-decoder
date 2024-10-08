@@ -50,8 +50,7 @@ const FaqAccordion = ({index, question, answer}: {index: number, question: strin
             </span>
         </button>
 
-        <div className="">
-
+        <div>
             <div id={`content-${index}`} className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out border-b border-b-[#808080] border-opacity-20">
                 <div className="p-3 text-sm text-theme-2 text-opacity-85 bg-theme-4 bg-opacity-85 text-left rounded-b-xl">
                 {answer}
