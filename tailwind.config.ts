@@ -14,6 +14,7 @@ const config: Config = {
         'theme-1' : '#706482',
         'theme-2' : '#4A4A4A',
         'theme-3' : '#7A897A',
+        'theme-4' : '#F0F0F0',
       },
     },
   },

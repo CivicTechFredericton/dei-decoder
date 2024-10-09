@@ -5,7 +5,8 @@ import { ArrowRightIcon } from "@heroicons/react/24/outline"; // v2 path for out
 const Home = () => {
   return (
     <Layout>
-      <div className="min-h-screen flex flex-col p-60 bg-gradient-to-r bg-white ">
+      {/* need to find a better way than h-[calc(100vh-_106px)] trying to get it so the copyright is visible after the first scroll */}
+      <div className=" h-[calc(100vh-106px)] flex flex-col p-60 bg-gradient-to-r bg-white ">
         <main className=" flex flex-col text-center items-center justify-center ">
           <h2 className="mx-8 mb-8 text-4xl font-bold text-theme-2 w-[1000px] h-auto leading-[54px]">
             Ensure your communications reflect your commitment to diversity,
