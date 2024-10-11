@@ -1,2 +1,4 @@
 node_modules
 .next
+.DS_Store
+.vscode/launch.json
