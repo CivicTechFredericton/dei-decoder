@@ -41,9 +41,9 @@ function toggleAccordion(index: number) {
 const FaqAccordion = ({index, question, answer}: {index: number, question: string, answer: string}) => {
   return (
     <>
-        <button onClick={() => toggleAccordion(index)} className="w-full flex justify-between items-center py-5 text-theme-2 text-left text-sm">
+        <button onClick={() => toggleAccordion(index)} className="w-full flex justify-between items-center py-5 text-main-color text-left text-sm font-bold">
             <span>{question}</span>
-            <span id={`icon-${index}`} className="text-theme-2 transition-transform duration-300">
+            <span id={`icon-${index}`} className="text-main-color transition-transform duration-300">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4">
                 <path fillRule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
             </svg>
@@ -52,7 +52,7 @@ const FaqAccordion = ({index, question, answer}: {index: number, question: strin
 
         <div>
             <div id={`content-${index}`} className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out border-b border-b-[#808080] border-opacity-20">
-                <div className="p-3 text-sm text-theme-2 text-opacity-85 bg-theme-4 bg-opacity-85 text-left rounded-b-xl">
+                <div className="p-3 text-sm text-main-color bg-accordion-bg-color bg-opacity-85 text-left rounded-b-xl">
                 {answer}
                 </div>
             </div>

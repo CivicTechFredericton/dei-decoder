@@ -6,7 +6,7 @@ export default function About() {
     <Layout>
       {/* need to find a better way than h-[calc(100vh-_106px)] trying to get it so the copyright is visible after the first scroll */}
       <main className="min-h-screen flex items-center justify-center p-10">
-        <div className="w-full max-w-[567px] flex flex-col justify-center text-theme-2 text-justify pr-10 md:pr-28 border-r-2">
+        <div className="w-full max-w-[567px] flex flex-col justify-center text-main-color text-justify pr-10 md:pr-28 border-r-2">
           <h1 className="text-2xl font-semibold mb-7">About this tool</h1>
           <p className="mb-5">
             At DEI Decoder, we believe that every organization has the potential

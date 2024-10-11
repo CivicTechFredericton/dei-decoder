@@ -2,13 +2,13 @@ import React from "react";
 import Layout from "../components/Layout";
 import FaqAccordion from "../components/FaqAccordion";
 
-export default function About() {
+export default function Faq() {
   return (
     <Layout>
       <main className=" min-h-[calc(100vh-_106px)] flex text-center pt-32 justify-center pb-28">
         <div className = "flex flex-col  w-[676px]">
-          <h1 className="text-3xl font-extrabold text-theme-2 mb-3">FAQs</h1>
-          <p className="text-2xl font-semibold text-theme-2 mb-24">Frequently Asked Questions</p>
+          <h1 className="text-3xl font-extrabold text-main-color mb-3">FAQs</h1>
+          <p className="text-2xl font-semibold text-sub-color mb-24">Frequently Asked Questions</p>
 
           <FaqAccordion 
             index={1} 
