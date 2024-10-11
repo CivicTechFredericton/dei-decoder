@@ -31,7 +31,7 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Deploy on Vercel (Ignore This)
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
@@ -102,3 +102,7 @@ If you encounter any issues, make sure:
 You have administrator/root permissions for the installation process.
 The installation is being performed with a stable internet connection.
 For more details, please refer to the official Ollama documentation.
+
+#### For Developers
+To Improve git commits and messaging, Use better-commits.
+This would help to structure the git commit messages. 
