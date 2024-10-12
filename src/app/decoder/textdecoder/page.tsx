@@ -12,11 +12,16 @@ interface Query {
 export default function TextDecoder() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
-  const [llmText, setllmText] = useState("");
+  const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [queries, setQueries] = useState<Query[]>([]);
 
   const handleProcess = async () => {
+    if (inputText == "") {
+      setErrorMessage(true);
+      return;
+    }
+    setErrorMessage(false);
     setLoading(true);
     try {
       const response = await fetch("/api/llama", {
@@ -26,7 +31,7 @@ export default function TextDecoder() {
         },
         body: JSON.stringify({ input: inputText }),
       });
-  
+
       const result = await response.json();
       if (response.ok) {
         const processedOutput = result["response"];
@@ -37,15 +42,16 @@ export default function TextDecoder() {
           { input: inputText, output: processedOutput },
         ]);
       } else {
+        setErrorMessage(true)
         console.log("Something went wrong.");
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
       setLoading(false);
+      setErrorMessage(false);
     }
   };
-  
 
   // Update inputText and outputText when a sidebar item is clicked
   const handleSelectQuery = (query: Query) => {
@@ -69,7 +75,9 @@ export default function TextDecoder() {
               </label>
               <textarea
                 id="inputText"
-                className="w-full h-96 p-4 border rounded-md"
+                className={`w-full h-96 p-4 border rounded-md ${
+                  errorMessage ? "border-red-700" : ""
+                }`}
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="Paste your text here..."
@@ -94,13 +102,14 @@ export default function TextDecoder() {
           </div>
           <button
             onClick={handleProcess}
-            className={`w-1/4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200 ${
+            className={`w-1/4 bg-grey-100 border text-black-700 py-2 rounded hover:bg-black-700 transition duration-200 ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
             disabled={loading}
           >
-            {loading ? "Analyzing..." : "Analyze"}
+            {loading ? "Analyzing..." : "Analyze job posting"}
           </button>
+          {errorMessage && <p className="text-red-500 mt-2">Enter valid job posting</p>}
         </main>
       </div>
     </Layout>
