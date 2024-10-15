@@ -78,33 +78,33 @@ export default function TextDecoder() {
     }
   };
 
-  const handleDocGeneration = async() =>{
+  const handleDocGeneration = async () => {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/documentgenerator', {
-        method: 'POST',
+      const response = await fetch("/api/documentgenerator", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ text: outputText }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate PDF');
+        throw new Error("Failed to generate PDF");
       }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
-      a.download = 'Job_Posting.pdf';
+      a.download = "Job_Posting.pdf";
       document.body.appendChild(a);
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error("Error generating PDF:", error);
     } finally {
       setLoading(false);
     }
@@ -193,9 +193,15 @@ export default function TextDecoder() {
             <p className="text-red-500 mt-2">{errorMessage}</p>
           )}
           {/* Div for Download full revised doc and Suggested new words */}
-          <div className="flex w-full max-w-5xl space-x-4">
+          <div className="flex w-full max-w-5xl space-x-4 ">
             <div className="flex-1">
               {/* button for downloading new report */}
+              <label
+                htmlFor="outputText"
+                className="block text-lg font-semibold mb-2"
+              >
+                New Job posting
+              </label>
               <textarea
                 id="inputText"
                 className={`w-full h-96 p-4 border rounded-md ${
@@ -203,36 +209,37 @@ export default function TextDecoder() {
                 }`}
                 value={outputText}
                 onChange={(e) => setOutputText(e.target.value)}
-                placeholder="Paste your text here..."
+                placeholder="The new AI generated text will appear here"
               />
-            <button
-            onClick={handleDocGeneration}
-            className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Generating please wait..." : "Download revised job posting"}
-          </button>
-              
+              <button
+                onClick={handleDocGeneration}
+                className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
+              >
+                {loading
+                  ? "Generating please wait..."
+                  : "Download revised job posting"}
+              </button>
             </div>
             <div className="flex-1">
               <label
                 htmlFor="outputText"
                 className="block text-lg font-semibold mb-2"
               >
-                Suggested Text
+                New Suggestions
               </label>
               {/*  "suggestions": {
     "young": "Recent graduates or individuals in their early career",
     "dynamic": "Collaborative", "energetic": "Flexible", "competitive": "Team-oriented", "vibrant": "Innovative", "youthful": "Experienced team members with a fresh perspective", "physically fit": "Ability to work effectively in an office environment"
   } */}
               <div className="w-full h-96 p-4 border rounded-md overflow-y-auto">
-              {Object.entries(suggestedText).map(([key, value]) => (
-    <div key={key} className="mb-2">
-      <strong>{key}:</strong> {value}
-    </div>
-  ))}
+                {Object.entries(suggestedText).map(([key, value]) => (
+                  <div key={key} className="mb-2">
+                    <strong>{key}:</strong> {value}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
