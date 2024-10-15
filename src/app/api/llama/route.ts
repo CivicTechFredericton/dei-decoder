@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-
 export async function POST(req: NextRequest) {
   try {
     const { input } = await req.json();
+    const json_format = '{"flagged_words": ["word1", "word2"],"explanations": {"word1": "Explanation for why word1 is problematic","word2": "Explanation for why word2 is problematic"},"suggestions": {"word1": "New suggested word without description","word2": "New suggested word without description"},"revisedjobposting":"New fully altered job posting in plain text.no special characters"}';
     const prompt =
-      "You are tasked with reviewing a job posting for potential biases based on protected classes under Canadian law. Analyze the document and identify any language or requirements that may exclude or disadvantage individuals from the following protected classes: Citizenship,Race,Place of origin,Ethnic origin,Colour,Ancestry,Disability,Age,Creed (Religion),Sex/Pregnancy,Family status,Marital status,Sexual orientation,Gender identity,Gender expression,Receipt of public assistance,Record of offences (criminal charges),For each instance of potential bias, provide a clear explanation of why the language or requirement may be problematic, and suggest how to revise the job posting to make it more inclusive and compliant with Canadian anti-discrimination laws.,Ensure that your suggestions promote diversity, equity, and inclusion, and consider any implicit bias or unintentional exclusionary language that might exist.    ";
+      'You are tasked with reviewing a job posting for potential biases based on protected classes under Canadian law. Analyze the document and identify any flagged words or phrases that may disadvantage individuals from the following protected classes: Citizenship, Race, Place of origin, Ethnic origin, Colour, Ancestry, Disability, Age, Creed (Religion), Sex/Pregnancy, Family status, Marital status, Sexual orientation, Gender identity, Gender expression, Receipt of public assistance, and Record of offences (criminal charges). For each instance of potential bias, provide a JSON response strictly in the format below. Ensure no text, characters, or formatting marks are included before or after the JSON output. The output should be valid JSON that follows this format precisely mandatorily:' + json_format + 'Ensure that your response is completely and strictly in the above JSON format (no text or characters before and after JSON). Promote diversity, equity, and inclusion, and consider any implicit biases or unintentional exclusionary language that might exist.';
+    
     // Call Ollama API running on localhost
     const ollamaResponse = await fetch("http://localhost:11434/api/generate", {
       method: "POST",
@@ -13,21 +14,26 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         model: "llama3.1",
+        // model: "gemma2",
         prompt: prompt + input,
-        temprature: 0.1,
+        // temperature: 0.1,
         stream: false,
       }),
     });
 
-    // if (!ollamaResponse.ok) {
-    //   throw new Error('Failed to get response from Ollama');
-    // }
-
-    const data = await ollamaResponse.json();
-
-    console.log(data.response);
-
-    return NextResponse.json({ response: data.response });
+    let parsedResponse;
+    const ollamaData = await ollamaResponse.json();
+    const cleanedResponse = ollamaData.response
+      .replace(/[\b\f\n\r\t]/g, '') // Remove bad control characters
+      .replace(/\\"/g, '"')
+    // console.log(ollamaData.response)
+    try {
+      parsedResponse = JSON.parse(cleanedResponse)
+    } catch (error) {
+      console.error("Failed to parse JSON response:", error);
+      return NextResponse.json({ error: "Invalid JSON response from model" }, { status: 500 });
+    }
+    return NextResponse.json(parsedResponse);
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(

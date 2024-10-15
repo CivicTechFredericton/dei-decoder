@@ -7,22 +7,37 @@ import Sidebar from "@/app/components/Sidebar";
 interface Query {
   input: string;
   output: string;
+  flaggedKeywords: string[];
 }
 
 export default function TextDecoder() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
-  const [errorMessage, setErrorMessage] = useState<boolean>(false);
+  const [flaggedKeywords, setFlaggedKeywords] = useState<string[]>([]);
+  const [suggestedText, setSuggestedText] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [queries, setQueries] = useState<Query[]>([]);
 
   const handleProcess = async () => {
-    if (inputText == "") {
-      setErrorMessage(true);
+    if (inputText === "") {
+      setErrorMessage("Enter valid job posting");
+      return;
+    } else if (inputText.length < 100) {
+      setErrorMessage(
+        "Please enter a job description more than 100 characters"
+      );
+      return;
+    } else if (inputText.length > 3000) {
+      setErrorMessage(
+        "Your job description is too large. Below 3000 characters"
+      );
       return;
     }
-    setErrorMessage(false);
+
     setLoading(true);
+
     try {
       const response = await fetch("/api/llama", {
         method: "POST",
@@ -33,37 +48,103 @@ export default function TextDecoder() {
       });
 
       const result = await response.json();
-      if (response.ok) {
-        const processedOutput = result["response"];
-        setOutputText(processedOutput);
-        // Append to queries with both input and processed output
+
+      if (result) {
+        const processedOutput = result;
+        const keywords = processedOutput.flagged_words;
+        const suggestions = processedOutput.suggestions;
+        setOutputText(processedOutput.revisedjobposting);
+
+        setFlaggedKeywords(keywords);
+        setSuggestedText(suggestions);
         setQueries((prevQueries) => [
           ...prevQueries,
-          { input: inputText, output: processedOutput },
+          {
+            input: inputText,
+            output: processedOutput,
+            flaggedKeywords: keywords,
+          },
         ]);
+        setErrorMessage("");
       } else {
-        setErrorMessage(true)
+        setErrorMessage("AI model is not reachable");
         console.log("Something went wrong.");
       }
     } catch (error) {
+      setErrorMessage("Error" + error);
       console.error("Error:", error);
     } finally {
       setLoading(false);
-      setErrorMessage(false);
     }
   };
 
-  // Update inputText and outputText when a sidebar item is clicked
-  const handleSelectQuery = (query: Query) => {
-    setInputText(query.input);
-    setOutputText(query.output);
+  const handleDocGeneration = async() =>{
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/documentgenerator', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: outputText }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Job_Posting.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const highlightKeywords = (text: string, keywords: string[]) => {
+    const parts = text.split(new RegExp(`(${keywords.join("|")})`, "gi"));
+    return (
+      <>
+        {parts.map((part, index) =>
+          keywords.includes(part.toLowerCase()) ? (
+            <span
+              key={index}
+              style={{
+                color: "red",
+                fontWeight: "bold",
+                transition: "color 3s ease",
+              }}
+            >
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
   };
 
   return (
     <Layout>
       <div className="flex">
-        <Sidebar queries={queries} onSelectQuery={handleSelectQuery} />
-
+        <Sidebar
+          queries={queries}
+          onSelectQuery={(query) => {
+            setInputText(query.input);
+            setOutputText(query.output);
+            setFlaggedKeywords(query.flaggedKeywords);
+          }}
+        />
         <main className="flex-1 w-full min-h-screen flex-col p-10 items-center justify-center space-y-6">
           <div className="flex w-full max-w-5xl space-x-4">
             <div className="flex-1">
@@ -83,7 +164,6 @@ export default function TextDecoder() {
                 placeholder="Paste your text here..."
               />
             </div>
-
             <div className="flex-1">
               <label
                 htmlFor="outputText"
@@ -91,13 +171,13 @@ export default function TextDecoder() {
               >
                 Output Text
               </label>
-              <textarea
-                id="outputText"
-                className="w-full h-96 p-4 border rounded-md"
-                value={outputText}
-                readOnly
-                placeholder="Result will appear here..."
-              />
+              <div className="w-full h-96 p-4 border rounded-md overflow-y-auto">
+                {outputText ? (
+                  highlightKeywords(inputText, flaggedKeywords)
+                ) : (
+                  <p className="text-gray-500">Result will appear here...</p>
+                )}
+              </div>
             </div>
           </div>
           <button
@@ -109,7 +189,53 @@ export default function TextDecoder() {
           >
             {loading ? "Analyzing..." : "Analyze job posting"}
           </button>
-          {errorMessage && <p className="text-red-500 mt-2">Enter valid job posting</p>}
+          {errorMessage != "" && (
+            <p className="text-red-500 mt-2">{errorMessage}</p>
+          )}
+          {/* Div for Download full revised doc and Suggested new words */}
+          <div className="flex w-full max-w-5xl space-x-4">
+            <div className="flex-1">
+              {/* button for downloading new report */}
+              <textarea
+                id="inputText"
+                className={`w-full h-96 p-4 border rounded-md ${
+                  errorMessage ? "border-red-700" : ""
+                }`}
+                value={outputText}
+                onChange={(e) => setOutputText(e.target.value)}
+                placeholder="Paste your text here..."
+              />
+            <button
+            onClick={handleDocGeneration}
+            className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Generating please wait..." : "Download revised job posting"}
+          </button>
+              
+            </div>
+            <div className="flex-1">
+              <label
+                htmlFor="outputText"
+                className="block text-lg font-semibold mb-2"
+              >
+                Suggested Text
+              </label>
+              {/*  "suggestions": {
+    "young": "Recent graduates or individuals in their early career",
+    "dynamic": "Collaborative", "energetic": "Flexible", "competitive": "Team-oriented", "vibrant": "Innovative", "youthful": "Experienced team members with a fresh perspective", "physically fit": "Ability to work effectively in an office environment"
+  } */}
+              <div className="w-full h-96 p-4 border rounded-md overflow-y-auto">
+              {Object.entries(suggestedText).map(([key, value]) => (
+    <div key={key} className="mb-2">
+      <strong>{key}:</strong> {value}
+    </div>
+  ))}
+              </div>
+            </div>
+          </div>
         </main>
       </div>
     </Layout>

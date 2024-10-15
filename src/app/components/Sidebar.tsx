@@ -3,6 +3,7 @@ import React from "react";
 interface Query {
   input: string;
   output: string;
+  flaggedKeywords:string[];
 }
 
 interface SidebarProps {
@@ -21,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ queries, onSelectQuery }) => {
             className="mb-2 p-2 bg-white rounded shadow cursor-pointer hover:bg-gray-200"
             onClick={() => onSelectQuery(query)} // Pass specific query data
           >
-            <p className="text-sm">{query.input}</p>
+            <p className="text-sm">{query.input.substring(0,10)}</p>
           </li>
         ))}
       </ul>
