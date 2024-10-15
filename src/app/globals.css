@@ -45,7 +45,7 @@ body {
   width: var(--size);
   height: var(--size);
   filter: blur(calc(var(--size) / 5));
-  background-image: linear-gradient(180deg, #A567D8, #00B7FF, #E71980);
+  background-image: linear-gradient(180deg, theme('colors.about-color'), theme('colors.try-color'), theme('colors.faq-color'));
   animation: rotate 4s linear infinite;
   opacity: 0.4;
 }
