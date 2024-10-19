@@ -1,10 +1,9 @@
 import React from "react";
-import Layout from "../components/Layout";
 import FaqAccordion from "../components/FaqAccordion";
 
 export default function Faq() {
   return (
-    <Layout>
+    <>
       <main className=" min-h-[calc(100vh-_106px)] flex text-center pt-20 justify-center pb-28">
         <div className = "flex flex-col  w-[676px]">
           <h1 className="text-4xl font-extrabold text-main-color mb-3">FAQs</h1>
@@ -92,6 +91,6 @@ export default function Faq() {
           />
         </div>
       </main>
-    </Layout>
+    </>
   );
 }

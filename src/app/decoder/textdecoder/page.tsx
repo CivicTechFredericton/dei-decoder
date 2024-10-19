@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Layout from "../../components/Layout";
 import Sidebar from "@/app/components/Sidebar";
 
 interface Query {
@@ -53,7 +52,9 @@ export default function TextDecoder() {
         const processedOutput = result;
         const keywords = processedOutput.flagged_words;
         const suggestions = processedOutput.suggestions;
-        setOutputText(processedOutput.revisedjobposting);
+        const revisedjobposting = processedOutput.revisedjobposting;
+
+        setOutputText(revisedjobposting);
 
         setFlaggedKeywords(keywords);
         setSuggestedText(suggestions);
@@ -113,7 +114,7 @@ export default function TextDecoder() {
   const highlightKeywords = (text: string, keywords: string[]) => {
     const parts = text.split(new RegExp(`(${keywords.join("|")})`, "gi"));
     return (
-      <>
+      <span style={{ whiteSpace: "pre-wrap" }}>
         {parts.map((part, index) =>
           keywords.includes(part.toLowerCase()) ? (
             <span
@@ -130,12 +131,12 @@ export default function TextDecoder() {
             part
           )
         )}
-      </>
+      </span>
     );
   };
 
   return (
-    <Layout>
+    <>
       <div className="flex">
         <Sidebar
           queries={queries}
@@ -152,99 +153,74 @@ export default function TextDecoder() {
                 htmlFor="inputText"
                 className="block text-lg font-semibold mb-2"
               >
-                Input Text
+                Input Job posting
               </label>
-              <textarea
-                id="inputText"
-                className={`w-full h-96 p-4 border rounded-md ${
-                  errorMessage ? "border-red-700" : ""
-                }`}
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder="Paste your text here..."
-              />
-            </div>
-            <div className="flex-1">
-              <label
-                htmlFor="outputText"
-                className="block text-lg font-semibold mb-2"
-              >
-                Output Text
-              </label>
-              <div className="w-full h-96 p-4 border rounded-md overflow-y-auto">
-                {outputText ? (
-                  highlightKeywords(inputText, flaggedKeywords)
-                ) : (
-                  <p className="text-gray-500">Result will appear here...</p>
-                )}
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={handleProcess}
-            className={`w-1/4 bg-grey-100 border text-black-700 py-2 rounded hover:bg-black-700 transition duration-200 ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={loading}
-          >
-            {loading ? "Analyzing..." : "Analyze job posting"}
-          </button>
-          {errorMessage != "" && (
-            <p className="text-red-500 mt-2">{errorMessage}</p>
-          )}
-          {/* Div for Download full revised doc and Suggested new words */}
-          <div className="flex w-full max-w-5xl space-x-4 ">
-            <div className="flex-1">
-              {/* button for downloading new report */}
-              <label
-                htmlFor="outputText"
-                className="block text-lg font-semibold mb-2"
-              >
-                New Job posting
-              </label>
-              <textarea
-                id="inputText"
-                className={`w-full h-96 p-4 border rounded-md ${
-                  errorMessage ? "border-red-700" : ""
-                }`}
-                value={outputText}
-                onChange={(e) => setOutputText(e.target.value)}
-                placeholder="The new AI generated text will appear here"
-              />
+
+              {outputText ? (
+                <div className="w-full h-96 p-4 border rounded-md overflow-y-auto">
+                  {highlightKeywords(inputText, flaggedKeywords)}
+                </div>
+              ) : (
+                <div>
+                  <textarea
+                    id="inputText"
+                    className={`w-full h-96 p-4 border rounded-md overflow-y-auto ${
+                      errorMessage ? "border-red-700" : ""
+                    }`}
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    placeholder="Paste your text here..."
+                  />
+                </div>
+              )}
               <button
-                onClick={handleDocGeneration}
+                onClick={handleProcess}
                 className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 disabled={loading}
               >
-                {loading
-                  ? "Generating please wait..."
-                  : "Download revised job posting"}
+                {loading ? "Analyzing..." : "Analyze job posting"}
               </button>
+              {errorMessage != "" && (
+                <p className="text-red-500 mt-2">{errorMessage}</p>
+              )}
             </div>
+
             <div className="flex-1">
+              {/* Div for Download full revised doc and Suggested new words */}{" "}
               <label
                 htmlFor="outputText"
                 className="block text-lg font-semibold mb-2"
               >
-                New Suggestions
+                Revised Job posting
               </label>
-              {/*  "suggestions": {
-    "young": "Recent graduates or individuals in their early career",
-    "dynamic": "Collaborative", "energetic": "Flexible", "competitive": "Team-oriented", "vibrant": "Innovative", "youthful": "Experienced team members with a fresh perspective", "physically fit": "Ability to work effectively in an office environment"
-  } */}
-              <div className="w-full h-96 p-4 border rounded-md overflow-y-auto">
-                {Object.entries(suggestedText).map(([key, value]) => (
-                  <div key={key} className="mb-2">
-                    <strong>{key}:</strong> {value}
-                  </div>
-                ))}
-              </div>
+              <span style={{ whiteSpace: "pre-wrap" }}>
+                <textarea
+                  id="inputText"
+                  className="w-full h-96 p-4 border rounded-md"
+                  value={outputText}
+                  onChange={(e) => setOutputText(e.target.value)}
+                  placeholder="The new AI generated text will appear here"
+                />
+              </span>
+              {outputText && (
+                <button
+                  onClick={handleDocGeneration}
+                  className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={loading}
+                >
+                  {loading
+                    ? "Generating please wait..."
+                    : "Download revised job posting"}
+                </button>
+              )}
             </div>
           </div>
         </main>
       </div>
-    </Layout>
+    </>
   );
 }
