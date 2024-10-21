@@ -9,7 +9,7 @@ const Home = () => {
       <div className="min-h-screen flex flex-col justify-center p-6 md:p-10 md:pt-60 bg-gradient-to-r bg-white overflow-hidden">
         <main className="flex flex-col text-center items-center justify-center relative">
           {/* Ensure gradient doesn't cause overflow */}
-          <div className="gradient z-0 absolute inset-0"></div>
+          <div className="gradient z-0"></div>
 
           <h2 className="mx-4 md:mx-8 mb-8 text-3xl md:text-4xl font-bold text-main-color max-w-3xl h-auto leading-relaxed md:leading-[54px] z-10">
             Ensure your communications reflect your commitment to diversity,
