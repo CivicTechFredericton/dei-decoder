@@ -3,8 +3,8 @@ import React from "react";
 export default function About() {
   return (
     <>
-      <main className=" min-h-[calc(100vh-_106px)] flex text-center pt-20 justify-center pb-28">
-        <div className="flex flex-col  w-[676px] items-center">
+      <main className="flex min-h-[calc(100vh-60px)] justify-center items-center">
+        <div className="flex flex-col w-[676px] items-center">
           <h1 className="text-4xl font-extrabold text-main-color mb-10">
             About this tool
           </h1>
