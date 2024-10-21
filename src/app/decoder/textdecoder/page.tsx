@@ -62,7 +62,7 @@ export default function TextDecoder() {
           ...prevQueries,
           {
             input: inputText,
-            output: processedOutput,
+            output: outputText,
             flaggedKeywords: keywords,
           },
         ]);
@@ -146,13 +146,10 @@ export default function TextDecoder() {
             setFlaggedKeywords(query.flaggedKeywords);
           }}
         />
-        <main className="flex-1 w-full min-h-screen flex-col p-10 items-center justify-center space-y-6">
-          <div className="flex w-full max-w-5xl space-x-4">
+        <main className="flex-1 p-10">
+          <div className="flex flex-col lg:flex-row w-full max-w-7xl space-y-4 lg:space-y-0 lg:space-x-4">
             <div className="flex-1">
-              <label
-                htmlFor="inputText"
-                className="block text-lg font-semibold mb-2"
-              >
+              <label className="block text-lg font-semibold mb-2">
                 Input Job posting
               </label>
 
@@ -175,7 +172,7 @@ export default function TextDecoder() {
               )}
               <button
                 onClick={handleProcess}
-                className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
+                className={`w-1/2 bg-blue-200 p-5 rounded-lg hover:bg-blue-500 hover:text-white transition duration-200 ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 disabled={loading}
