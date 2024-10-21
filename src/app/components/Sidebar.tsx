@@ -23,11 +23,11 @@ const Sidebar: React.FC<SidebarProps> = ({ queries, onSelectQuery }) => {
   return (
     <>
       {/* Button to toggle sidebar, visible on mobile */}
-      <button className="lg:hidden flex pt-10 pl-5 text-black" onClick={toggleSidebar}>
-        {/* Conditionally render the MenuIcon when sidebar is closed, and XIcon when it's open */}
-        {isOpen ? (
-          <XMarkIcon className="h-6 w-6 " /> // Close icon when sidebar is open
-        ) : (
+      <button
+        className="lg:hidden flex pt-10 pl-5 text-black"
+        onClick={toggleSidebar}
+      >
+        {!isOpen && (
           <Bars2Icon className="h-6 w-6 " /> // Menu icon when sidebar is closed
         )}
       </button>
@@ -38,7 +38,16 @@ const Sidebar: React.FC<SidebarProps> = ({ queries, onSelectQuery }) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <h2 className="text-lg font-semibold mb-4">Query History <XMarkIcon className=" lg:hidden h-6 w-6 " /></h2>
+        <h2 className="text-lg font-semibold mb-4 flex">
+          <span>History</span>
+          {isOpen && (
+            <XMarkIcon
+              className="h-6 w-6 text-gray-700 cursor-pointer"
+              onClick={toggleSidebar} // Close the sidebar when the icon is clicked
+            />
+          )}
+        </h2>
+
         <ul>
           {queries.map((query, index) => (
             <li
@@ -58,7 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({ queries, onSelectQuery }) => {
       {/* Overlay to close sidebar when clicked outside (for mobile view) */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 lg:hidden"
+          className="fixed inset-0 opacity-0 lg:hidden"
           onClick={toggleSidebar}
         ></div>
       )}
