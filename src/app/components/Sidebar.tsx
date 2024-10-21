@@ -28,7 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ queries, onSelectQuery }) => {
         onClick={toggleSidebar}
       >
         {!isOpen && (
-          <Bars2Icon className="h-6 w-6 " /> // Menu icon when sidebar is closed
+          <Bars2Icon className="h-6 w-6" /> // Menu icon when sidebar is closed
         )}
       </button>
 
@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ queries, onSelectQuery }) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <h2 className="text-lg font-semibold mb-4 flex">
+        <h2 className="text-lg font-semibold mb-4 flex border-b-2">
           <span>History</span>
           {isOpen && (
             <XMarkIcon
