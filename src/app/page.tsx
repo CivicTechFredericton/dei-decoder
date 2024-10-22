@@ -6,18 +6,18 @@ const Home = () => {
   return (
     <>
       {/* Add overflow-hidden to prevent unwanted scroll */}
-      <div className="min-h-screen flex flex-col justify-center p-6 md:p-10 md:pt-60 bg-gradient-to-r bg-white overflow-hidden">
+      <div className="min-h-screen flex flex-col justify-center p-6 pt-20 md:p-10 md:pt-60 bg-gradient-to-r bg-white overflow-hidden">
         <main className="flex flex-col text-center items-center justify-center relative">
           {/* Ensure gradient doesn't cause overflow */}
           <div className="gradient z-0"></div>
 
-          <h2 className="mx-4 md:mx-8 mb-8 text-3xl md:text-4xl font-bold text-main-color max-w-3xl h-auto leading-relaxed md:leading-[54px] z-10">
+          <h2 className="mx-3 md:mx-8 mb-8 text-2xl md:text-4xl font-bold text-main-color max-w-3xl h-auto leading-relaxed md:leading-[54px] z-10">
             Ensure your communications reflect your commitment to diversity,
             equity, and inclusion by analyzing bias in your job postings,
             communications, and more.
           </h2>
 
-          <p className="text-lg md:text-xl text-sub-color max-w-3xl h-auto leading-relaxed z-10">
+          <p className="md:text-xl text-sub-color max-w-3xl h-auto leading-relaxed z-10">
             In seconds, the DEI Decoder will enable your organization to create
             more inclusive content by identifying gaps and providing actionable
             recommendations.

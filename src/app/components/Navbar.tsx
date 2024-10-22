@@ -13,10 +13,10 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full py-4 bg-white border-b-2 border-gray-100">
+    <header className="w-full py-6 bg-white border-b-2 border-gray-100">
       <nav className="flex justify-between items-center px-4 md:px-12">
         {/* Logo */}
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-3xl font-bold md:pl-60">
           <Link href="/">
             <span className="text-about-color">D</span>
             <span className="text-try-color">E</span>
@@ -51,7 +51,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Links for larger screens */}
-        <ul className="hidden md:flex space-x-12 text-xl font-extrabold">
+        <ul className="hidden md:flex md:pr-60 space-x-12 text-xl font-extrabold">
           <li>
             <Link href="/about" className="text-about-color">
               About
@@ -76,19 +76,19 @@ const Navbar = () => {
           isOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <ul className="flex flex-col space-y-4 text-lg font-extrabold mt-4 text-center">
+        <ul className="flex flex-col space-y-4 text-xl font-extrabold mt-4 text-center">
           <li>
-            <Link href="/about" className="text-about-color" onClick={closeMenu}>
+            <Link href="/about" className="text-about-color border-b-2" onClick={closeMenu}>
               About
             </Link>
           </li>
           <li>
-            <Link href="/decoder" className="text-try-color" onClick={closeMenu}>
+            <Link href="/decoder" className="text-try-color border-b-2" onClick={closeMenu}>
               Try it Now
             </Link>
           </li>
           <li>
-            <Link href="/faq" className="text-faq-color" onClick={closeMenu}>
+            <Link href="/faq" className="text-faq-color border-b-2" onClick={closeMenu}>
               FAQ
             </Link>
           </li>
