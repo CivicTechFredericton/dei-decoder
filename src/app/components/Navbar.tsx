@@ -14,9 +14,9 @@ const Navbar = () => {
 
   return (
     <header className="w-full py-6 bg-white border-b-2 border-gray-100">
-      <nav className="px-4 whitespace-nowrap flex justify-between md:mx-10 md:px-40 lg:mx-20 lg:px-20 xl:mx-40 xl:px-80 items-center ">
+      <nav className="flex justify-evenly items-center text-nowrap whitespace-nowrap">
         {/* Logo */}
-        <h1 className="text-3xl font-bold px-5">
+        <h1 className="text-3xl font-bold">
           <Link href="/">
             <span className="text-about-color">D</span>
             <span className="text-try-color">E</span>
