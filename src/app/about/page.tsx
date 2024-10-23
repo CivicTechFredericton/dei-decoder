@@ -3,7 +3,7 @@ import React from "react";
 export default function About() {
   return (
     <>
-      <main className="flex min-h-[calc(100vh-60px)] justify-center items-center">
+      <main className="flex min-h-[calc(100vh-90px)] justify-center items-center">
         <div className="flex flex-col w-[676px] items-center">
           <h1 className="text-4xl font-extrabold text-main-color mb-10">
             About this tool

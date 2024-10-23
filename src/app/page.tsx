@@ -6,12 +6,12 @@ const Home = () => {
   return (
     <>
       {/* Add overflow-hidden to prevent unwanted scroll */}
-      <div className="min-h-screen flex flex-col justify-center p-6 pt-20 md:p-10 md:pt-60 bg-gradient-to-r bg-white overflow-hidden">
+      <div className="min-h-[calc(100vh-90px)] flex flex-col justify-center items-center bg-gradient-to-r bg-white overflow-hidden">
         <main className="flex flex-col text-center items-center justify-center relative">
           {/* Ensure gradient doesn't cause overflow */}
           <div className="gradient z-0"></div>
 
-          <h2 className="mx-3 md:mx-8 mb-8 text-2xl md:text-4xl font-bold text-main-color max-w-3xl h-auto leading-relaxed md:leading-[54px] z-10">
+          <h2 className="mx-3 md:mx-8 mb-8 text-2xl md:text-4xl font-bold text-main-color max-w-[1000px] h-auto leading-relaxed md:leading-[54px] z-10">
             Ensure your communications reflect your commitment to diversity,
             equity, and inclusion by analyzing bias in your job postings,
             communications, and more.
@@ -34,8 +34,6 @@ const Home = () => {
             </button>
           </Link>
         </main>
-        {/* Add margin-bottom or padding-bottom as needed to ensure the footer is just out of initial view */}
-        <div className="mt-auto pb-32 md:pb-40 lg:pb-52"></div>
       </div>
     </>
   );

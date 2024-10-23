@@ -14,9 +14,9 @@ const Navbar = () => {
 
   return (
     <header className="w-full py-6 bg-white border-b-2 border-gray-100">
-      <nav className="flex justify-evenly items-center text-nowrap whitespace-nowrap">
+      <nav className="flex justify-between md:justify-evenly mx-7 items-center text-nowrap whitespace-nowrap">
         {/* Logo */}
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-4xl font-bold">
           <Link href="/">
             <span className="text-about-color">D</span>
             <span className="text-try-color">E</span>
@@ -51,7 +51,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Links for larger screens */}
-        <ul className="hidden md:flex space-x-12 text-xl font-extrabold">
+        <ul className="hidden md:flex space-x-12 text-2xl font-extrabold">
           <li>
             <Link href="/about" className="text-about-color">
               About
