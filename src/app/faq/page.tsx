@@ -4,8 +4,8 @@ import FaqAccordion from "../components/FaqAccordion";
 export default function Faq() {
   return (
     <>
-      <main className=" min-h-[calc(100vh-_106px)] flex text-center pt-20 justify-center pb-28">
-        <div className = "flex flex-col  w-[676px]">
+      <main className="min-h-[calc(100vh-90px)] flex text-center pt-20 justify-center pb-28">
+        <div className = "flex flex-col w-[676px] mx-10">
           <h1 className="text-4xl font-extrabold text-main-color mb-3">FAQs</h1>
           <p className="text-2xl font-semibold text-sub-color mb-10">Frequently Asked Questions</p>
 
