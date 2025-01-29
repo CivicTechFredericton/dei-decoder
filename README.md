@@ -119,7 +119,7 @@ For more details, please refer to the official Ollama documentation.
     - **components/**: Contains React components.
     - **decoder/**
         - **docdecoder**
-            - **route.tsx**: Todo a Document analyer option
+            - **route.tsx**: Todo a Document analyzer option
         - **linkdecoder**
             - **route.tsx**: Todo a URL link decoder
         - **textdecoder**
