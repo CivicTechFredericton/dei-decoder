@@ -107,6 +107,26 @@ You have administrator/root permissions for the installation process.
 The installation is being performed with a stable internet connection.
 For more details, please refer to the official Ollama documentation.
 
+## Key Files and Directories
+
+- **public/**: Contains public assets such as icons.
+- **README.md**: The readme file for the project.
+- **src/**: Contains the source code for the project.
+  - **app/**: Contains application-specific code.
+    - **api/**: Contains API route handlers.
+      - **documentgenerator/route.ts**: API route for generating documents.
+      - **llama/route.ts**: API route for interacting with the Llama model.
+    - **components/**: Contains React components.
+    - **decoder/**
+        - **docdecoder**
+            - **route.tsx**: Todo a Document analyer option
+        - **linkdecoder**
+            - **route.tsx**: Todo a URL link decoder
+        - **textdecoder**
+            - **route.tsx**: Current implementation text decoder
+
+  - **layout.tsx**: The root layout component for the application.
+
 #### For Developers
 To Improve git commits and messaging, Use better-commits.
 This would help to structure the git commit messages. 
