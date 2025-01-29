@@ -135,4 +135,3 @@ This would help to structure the git commit messages.
 - Clone the `dev` branch.
 - Make pull requests to the `dev` branch.
 - Follow the pull request template practices.
-```
