@@ -79,12 +79,12 @@ Verify the installation by checking the version:
 ```
 ollama --version
 ```
-Installing the Llama 3.1 Model
+Installing the Llama Model
 After installing Ollama, you can easily download the Llama 3.1 model:
 
 Open the terminal (or Command Prompt on Windows).
-Install the Llama 3.1 model or any other model that Ollama supports, that you want to test.
-
+Install the Llama model or any other model that Ollama supports, that you want to test.
+For example, llama3.1 can be installed with this code. Use your choice of model name.
 ```
 ollama install llama3.1
 ```
@@ -127,6 +127,12 @@ For more details, please refer to the official Ollama documentation.
 
   - **layout.tsx**: The root layout component for the application.
 
-#### For Developers
+### For Developers
 To Improve git commits and messaging, Use better-commits.
 This would help to structure the git commit messages. 
+
+#### Contribution Guidelines
+- Clone the `dev` branch.
+- Make pull requests to the `dev` branch.
+- Follow the pull request template practices.
+```
