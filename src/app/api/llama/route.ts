@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         const flagged_words = Array.isArray(cleanedResponse?.flagged_words) ? cleanedResponse?.flagged_words : ["none"];
         console.log(cleanedResponse)
 
-        // AWM 20250208 - Format reponse to maintain the JSON structure
+        // AWM 20250208 - Format response to maintain the JSON structure
         return NextResponse.json(
         {
             success: false,
