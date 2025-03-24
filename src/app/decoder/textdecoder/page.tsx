@@ -135,6 +135,34 @@ export default function TextDecoder() {
     );
   };
 
+  const reportLike = () => {
+    fetch('/api/reportfeedback', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify("like")
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error))
+  }
+
+  const reportDislike = () => {
+    fetch('/api/reportfeedback', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify("dislike")
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error))
+  }
+
   return (
     <>
       <div className="flex">
@@ -202,17 +230,22 @@ export default function TextDecoder() {
                 />
               </span>
               {outputText && (
-                <button
-                  onClick={handleDocGeneration}
-                  className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={loading}
-                >
-                  {loading
-                    ? "Generating please wait..."
-                    : "Download revised job posting"}
-                </button>
+                <div>
+                  <button
+                    onClick={handleDocGeneration}
+                    className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
+                      loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    disabled={loading}
+                  >
+                    {loading
+                      ? "Generating please wait..."
+                      : "Download revised job posting"}
+                  </button>
+
+                  <button onClick={reportLike} className="border text-black-700 p-5 rounded-xl">Like</button>
+                  <button onClick={reportDislike} className="border text-black-700 p-5 rounded-xl">Dislike</button>
+                </div>
               )}
             </div>
           </div>
