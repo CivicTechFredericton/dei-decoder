@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Sidebar from "@/app/components/Sidebar";
+import { HandThumbUpIcon, HandThumbDownIcon } from "@heroicons/react/24/solid";
 
 interface Query {
   input: string;
@@ -202,17 +203,28 @@ export default function TextDecoder() {
                 />
               </span>
               {outputText && (
-                <button
-                  onClick={handleDocGeneration}
-                  className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={loading}
-                >
-                  {loading
-                    ? "Generating please wait..."
-                    : "Download revised job posting"}
-                </button>
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={handleDocGeneration}
+                    className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
+                      loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    disabled={loading}
+                  >
+                    {loading
+                      ? "Generating please wait..."
+                      : "Download revised job posting"}
+                  </button>
+
+                  <div className="flex gap-2">
+                    <button className="p-2 bg-white border border-green-500 hover:bg-green-500 rounded-full transition group">
+                      <HandThumbUpIcon className="size-6 text-green-500 group-hover:text-white"/>
+                    </button>
+                    <button className="p-2 bg-white border border-red-500 hover:bg-red-500 rounded-full transition group">
+                      <HandThumbDownIcon className="size-6 text-red-500 group-hover:text-white"/>
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
