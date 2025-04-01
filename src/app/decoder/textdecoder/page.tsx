@@ -48,21 +48,21 @@ export default function TextDecoder() {
 
       const result = await response.json();
 
-      if (result) {
-        const processedOutput = result;
+      if (result.success) {
+        const processedOutput = result.data;
         const keywords = processedOutput.flagged_words;
         const suggestions = processedOutput.suggestions;
         const revisedjobposting = processedOutput.revisedjobposting;
 
         setOutputText(revisedjobposting);
-
+        console.log(outputText)
         setFlaggedKeywords(keywords);
         setSuggestedText(suggestions);
         setQueries((prevQueries) => [
           ...prevQueries,
           {
             input: inputText,
-            output: outputText,
+            output: revisedjobposting,
             flaggedKeywords: keywords,
           },
         ]);
