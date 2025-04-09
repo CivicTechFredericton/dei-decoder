@@ -144,6 +144,36 @@ export default function TextDecoder() {
     setFeedback(feedback);
     setFeedbackConfirm(true);
   }
+    
+  const reportFeedback = async () => {
+    setFeedbackConfirm(false)
+    // Create body with input, outputs, and feedbacks
+    const payload = {
+      feedback: feedback,
+      inputText,
+      outputText,
+      flaggedKeywords,
+      suggestedText
+    }
+
+    // API Request to send feedbacks
+    try {
+      const response = await fetch('/api/reportfeedback', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <>
@@ -224,7 +254,7 @@ export default function TextDecoder() {
                       ? "Generating please wait..."
                       : "Download revised job posting"}
                   </button>
-
+                  
                   <div className="flex gap-2">
                     <button
                       className="p-2 bg-white border border-green-500 hover:bg-green-500 rounded-full transition group"
@@ -248,7 +278,7 @@ export default function TextDecoder() {
                         <Description>Would you like to send this feedback?</Description>
                         <div className="flex gap-4">
                           <button
-                            onClick={() => setFeedbackConfirm(false)}
+                            onClick={reportFeedback}
                             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                           >
                             Yes
@@ -263,7 +293,6 @@ export default function TextDecoder() {
                       </DialogPanel>
                     </div>
                   </Dialog>
-                  
                 </div>
               )}
             </div>
