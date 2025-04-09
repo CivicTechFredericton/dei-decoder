@@ -23,15 +23,30 @@ const transporter = nodemailer.createTransport({
 export async function POST(req: NextRequest) {
 
     try {
-        // Parse incoming request body (feedback as JSON)
-        const feedback = await req.json();
+        // Parse incoming request body (feedback, input, and outputs)
+        const { feedback, inputText, outputText, flaggedKeywords, suggestedText } = await req.json();
+
+        // Reformat flagged keywords (array -> readable text)
+        const formattedKeywords = Array.isArray(flaggedKeywords)
+            ? flaggedKeywords.join(", ")
+            : "";
+
+        // Reformat suggested text (dictionary -> readable text)
+        const formattedSuggestions = suggestedText
+            ? Object.entries(suggestedText)
+                .map(([keyword, suggestion]) => `- ${keyword}: ${suggestion}`)
+                .join("\n")
+            : "";
+
+        // Construct email message
+        const message = `A user ${feedback} the result!\n\nInput Job Posting:\n${inputText}\n\nFlagged Keywords:\n${formattedKeywords}\n\nSuggested Text:\n${formattedSuggestions}\n\nRevised Job Posting:\n${outputText}`;
 
         // Send an email to a receipient using the transporter
         const info = await transporter.sendMail({
             from: `DEI Decoder <${process.env.MAIL_SENDER}>`,
             to: `Admin <${process.env.MAIL_RECIPIENT}>`,
             subject: "DEI Result Feedback",
-            text: `A user ${feedback} the result!`,
+            text: message,
         });
         return NextResponse.json(info.messageId);
 

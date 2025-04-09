@@ -135,32 +135,33 @@ export default function TextDecoder() {
     );
   };
 
-  const reportLike = () => {
-    fetch('/api/reportfeedback', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify("like")
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error(error))
-  }
+  const reportFeedback = async (feedback: string) => {
+    // Create body with input, outputs, and feedbacks
+    const payload = {
+      feedback: feedback,
+      inputText,
+      outputText,
+      flaggedKeywords,
+      suggestedText
+    }
 
-  const reportDislike = () => {
-    fetch('/api/reportfeedback', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify("dislike")
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error(error))
+    // API Request to send feedbacks
+    try {
+      const response = await fetch('/api/reportfeedback', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -243,8 +244,8 @@ export default function TextDecoder() {
                       : "Download revised job posting"}
                   </button>
 
-                  <button onClick={reportLike} className="border text-black-700 p-5 rounded-xl">Like</button>
-                  <button onClick={reportDislike} className="border text-black-700 p-5 rounded-xl">Dislike</button>
+                  <button onClick={() => reportFeedback("like")} className="border text-black-700 p-5 rounded-xl">Like</button>
+                  <button onClick={() => reportFeedback("dislike")} className="border text-black-700 p-5 rounded-xl">Dislike</button>
                 </div>
               )}
             </div>
