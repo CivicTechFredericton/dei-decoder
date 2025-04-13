@@ -1,0 +1,16 @@
+# Node modules and build outputs
+node_modules
+.next
+dist
+
+# Git & IDE
+.git
+.vscode
+.DS_Store
+
+# Logs & local configs
+*.log
+.env*
+README.md
+Dockerfile
+docker-compose.yml

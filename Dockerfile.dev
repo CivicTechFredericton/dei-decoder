@@ -1,0 +1,16 @@
+# Dev-friendly image: no multi-stage, live rebuilds
+FROM node:20-slim
+
+WORKDIR /app
+
+# Install deps first
+COPY package*.json ./
+RUN npm install
+
+# Copy all source files (but rely on volume mount in compose)
+COPY . .
+
+EXPOSE 3000
+
+# Start dev server with file watching
+CMD ["npm", "run", "dev"]

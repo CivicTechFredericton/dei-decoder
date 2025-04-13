@@ -2,20 +2,40 @@
 
 ## Setup Instructions
 
-### 1. Clone the Repository  
+### 1. Prerequisites
+Make sure you have [**nvm** (Node Version Manager)](https://github.com/nvm-sh/nvm) installed.
+
+To install `nvm`, run the following command:
+
+```sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+```
+
+After installation, restart your terminal or run:
+```sh
+source ~/.bashrc   # or ~/.zshrc, ~/.profile based on your shell
+```
+### 2. Set Up Node Environment
+Navigate to the project directory and install the correct Node.js version defined in .nvmrc:
+```sh
+nvm install    # Installs the Node.js version specified in .nvmrc
+nvm use        # Switches to that version
+```
+
+### 3. Clone the Repository  
 Run the following command to clone the project to your local system:  
 ```sh
 git clone https://github.com/CivicTechFredericton/dei-decoder.git
 cd dei-decoder
 ```
 
-### 2. Install Dependencies  
+### 4. Install Dependencies  
 Navigate to the project directory and install the necessary dependencies:  
 ```sh
 npm install
 ```
 
-### 3. Getting Started  
+### 5. Getting Started  
 Once the dependencies are installed, you're ready to start working on the project.
 
 
