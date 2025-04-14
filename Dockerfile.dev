@@ -1,5 +1,5 @@
 # Dev-friendly image: no multi-stage, live rebuilds
-FROM node:20-slim
+FROM node:22-slim
 
 WORKDIR /app
 

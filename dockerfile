@@ -1,5 +1,5 @@
 # -------- Base Build Stage --------
-FROM node:20-slim AS builder
+FROM node:22-slim AS builder
 
 # Set working directory inside container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # -------- Runtime Stage --------
-FROM node:20-slim AS runner
+FROM node:22-slim AS runner
 
 # Use non-root user
 RUN useradd --user-group --create-home --shell /bin/false deiappuser
