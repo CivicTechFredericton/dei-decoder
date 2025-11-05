@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Sidebar from "@/app/components/Sidebar";
+import { HandThumbUpIcon, HandThumbDownIcon } from "@heroicons/react/24/solid";
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 
 interface Query {
   input: string;
@@ -18,6 +20,9 @@ export default function TextDecoder() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [queries, setQueries] = useState<Query[]>([]);
+
+  const [feedback, setFeedback] = useState("");
+  const [feedbackConfirm, setFeedbackConfirm] = useState<boolean>(false);
 
   const handleProcess = async () => {
     if (inputText === "") {
@@ -135,6 +140,41 @@ export default function TextDecoder() {
     );
   };
 
+  const handleFeedbackClick = (feedback: string) => {
+    setFeedback(feedback);
+    setFeedbackConfirm(true);
+  }
+    
+  const reportFeedback = async () => {
+    setFeedbackConfirm(false)
+    // Create body with input, outputs, and feedbacks
+    const payload = {
+      feedback: feedback,
+      inputText,
+      outputText,
+      flaggedKeywords,
+      suggestedText
+    }
+
+    // API Request to send feedbacks
+    try {
+      const response = await fetch('/api/reportfeedback', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      console.log(result);
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
       <div className="flex">
@@ -202,17 +242,58 @@ export default function TextDecoder() {
                 />
               </span>
               {outputText && (
-                <button
-                  onClick={handleDocGeneration}
-                  className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={loading}
-                >
-                  {loading
-                    ? "Generating please wait..."
-                    : "Download revised job posting"}
-                </button>
+                <div className="flex items-center justify-between">
+                  <button
+                    onClick={handleDocGeneration}
+                    className={`w-1/2 bg-blue-200 border text-black-700 p-5 rounded-xl hover:bg-black-700 transition duration-200 ${
+                      loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    disabled={loading}
+                  >
+                    {loading
+                      ? "Generating please wait..."
+                      : "Download revised job posting"}
+                  </button>
+                  
+                  <div className="flex gap-2">
+                    <button
+                      className="p-2 bg-white border border-green-500 hover:bg-green-500 rounded-full transition group"
+                      onClick={() => handleFeedbackClick("like")}
+                    >
+                      <HandThumbUpIcon className="size-6 text-green-500 group-hover:text-white"/>
+                    </button>
+                    <button
+                      className="p-2 bg-white border border-red-500 hover:bg-red-500 rounded-full transition group"
+                      onClick={() => handleFeedbackClick("dislike")}
+                    >
+                      <HandThumbDownIcon className="size-6 text-red-500 group-hover:text-white"/>
+                    </button>
+                  </div>
+
+                  <Dialog open={feedbackConfirm} onClose={() => setFeedbackConfirm(false)} className="relative z-50">
+                    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm"/>
+                    <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                      <DialogPanel className="max-w-lg space-y-4 border bg-white p-10 rounded-lg shadow-xl">
+                        <DialogTitle className="font-bold">Report Feedback</DialogTitle>
+                        <Description>Would you like to send this feedback?</Description>
+                        <div className="flex gap-4">
+                          <button
+                            onClick={reportFeedback}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                          >
+                            Yes
+                          </button>
+                          <button
+                            onClick={() => setFeedbackConfirm(false)}
+                            className="px-4 py-2 border rounded-md hover:bg-gray-100"
+                          >
+                            No
+                          </button>
+                        </div>
+                      </DialogPanel>
+                    </div>
+                  </Dialog>
+                </div>
               )}
             </div>
           </div>
