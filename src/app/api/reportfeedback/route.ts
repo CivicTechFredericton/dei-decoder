@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         // Construct email message
         const message = `A user ${feedback} the result!\n\nInput Job Posting:\n${inputText}\n\nFlagged Keywords:\n${formattedKeywords}\n\nSuggested Text:\n${formattedSuggestions}\n\nRevised Job Posting:\n${outputText}`;
 
-        // Send an email to a receipient using the transporter
+        // Send an email to a recipient using the transporter
         const info = await transporter.sendMail({
             from: `DEI Decoder <${process.env.MAIL_SENDER}>`,
             to: `Admin <${process.env.MAIL_RECIPIENT}>`,
