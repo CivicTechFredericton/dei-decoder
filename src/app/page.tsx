@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/24/outline"; // v2 path for outline icons
 import "./globals.css";
+import DemoNotification from "./components/DemoNotification";
 
 const Home = () => {
   return (
     <>
+      <DemoNotification />
       {/* Add overflow-hidden to prevent unwanted scroll */}
       <div className="min-h-[calc(100vh-90px)] flex flex-col justify-center items-center bg-gradient-to-r bg-white overflow-hidden">
         <main className="flex flex-col text-center items-center justify-center relative">
