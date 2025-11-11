@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+// Set maximum duration for this API route (in seconds)
+export const maxDuration = 300; // 5 minutes
+
 export async function POST(req: NextRequest) {
   try {
     const { input } = await req.json();
@@ -6,24 +10,45 @@ export async function POST(req: NextRequest) {
     const prompt =
           'You are tasked with reviewing a job posting for potential biases based on protected classes under Canadian law. Analyze the document and identify any flagged words or phrases that may disadvantage individuals from the following protected classes: Citizenship, Race, Place of origin, Ethnic origin, Colour, Ancestry, Disability, Age, Creed (Religion), Sex/Pregnancy, Family status, Marital status, Sexual orientation, Gender identity, Gender expression, Receipt of public assistance, and Record of offences (criminal charges). For each instance of potential bias, provide a JSON response strictly in the format below. Ensure no text, characters, or formatting marks are included before or after the JSON output. The output should be valid JSON that follows this format precisely mandatorily:' + json_format + 'Ensure that your response is completely and strictly in the above JSON format (no text or characters before and after JSON). Promote diversity, equity, and inclusion, and consider any implicit biases or unintentional exclusionary language that might exist.';
 
-      // Call Ollama API running on localhost
-      const ollamaResponse = await fetch("http://localhost:11434/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "llama3.1",
-        // model: "gemma2",
-        prompt: prompt + input,
-        temperature: 1,
-        stream: false,
-        maxtokens: 1024,
-        response_format: {
-          type: "json_object"
-        },
-      }),
-    });
+      // Call Ollama API running on localhost with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 240000); // 4 minute timeout
+
+      // Get Ollama URL from environment variable, fallback to default
+      const ollamaUrl = process.env.OLLAMA_URL || "http://localhost:11434";
+      const ollamaApiUrl = `${ollamaUrl}/api/generate`;
+
+      let ollamaResponse;
+      try {
+        ollamaResponse = await fetch(ollamaApiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "llama3.1",
+            // model: "gemma2",
+            prompt: prompt + input,
+            temperature: 1,
+            stream: false,
+            maxtokens: 1024,
+            response_format: {
+              type: "json_object"
+            },
+          }),
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+      } catch (fetchError: any) {
+        clearTimeout(timeoutId);
+        if (fetchError.name === 'AbortError') {
+          return NextResponse.json(
+            { error: "Request timeout: The model is taking too long to respond. Please try with a shorter input or check if Ollama is running." },
+            { status: 504 }
+          );
+        }
+        throw fetchError;
+      }
 
     // AWM 20250208 - New interface to maintain data structure in responses
     interface ParsedResponse {
